@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  clerkUserId String      @unique // Clerk user ID from Clerk authentication
+  email       String      @unique
+  interviews  Interview[] // Relation to Interview
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Interview {
+  id          Int        @id @default(autoincrement())
+  userId      String     // Change userId to String
+  user        User       @relation(fields: [userId], references: [clerkUserId])
+  role        String     // Role of the interviewee, e.g., "Software Engineer"
+  experience  Int        // Experience in years for the interviewee
+  description String?     // Optional description of the interview
+  questions   Question[]  // Relation to Question
+  score       Int?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Question {
+  id          Int         @id @default(autoincrement())
+  interviewId Int         // Foreign key to associate with Interview
+  interview   Interview   @relation(fields: [interviewId], references: [id])
+  text        String      // The actual interview question text
+  userAnswer  UserAnswer? // Optional relation to UserAnswer
+  aiAnswer    AiAnswer?   // Optional relation to AiAnswer
+  feedback    Feedback?   // Optional relation to Feedback
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserAnswer {
+  id         Int       @id @default(autoincrement())
+  questionId Int       @unique // Ensure one-to-one relationship with Question
+  question   Question  @relation(fields: [questionId], references: [id])
+  answerText String    // User's answer text
+  score      Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AiAnswer {
+  id         Int       @id @default(autoincrement())
+  questionId Int       @unique // Ensure one-to-one relationship with Question
+  question   Question  @relation(fields: [questionId], references: [id])
+  answerText String    // AI's answer text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Feedback {
+  id         Int       @id @default(autoincrement())
+  questionId Int       @unique // Ensure one-to-one relationship with Question
+  question   Question  @relation(fields: [questionId], references: [id])
+  content    String    // Feedback on the user's answer
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
