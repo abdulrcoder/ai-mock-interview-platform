@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma"; // Adjust this import based on your prisma setup
+import prisma from "../../../lib/gemini-ai"; // Adjust this import based on your prisma setup
 
 // Main POST function to create a question and optionally end the interview
 export async function POST(req) {
