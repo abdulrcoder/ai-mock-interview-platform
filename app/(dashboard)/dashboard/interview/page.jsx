@@ -89,7 +89,8 @@ const InterviewPage = () => {
         <div className="text-center text-gray-400 mt-8">
           <p>No interviews available yet.</p>
           <p>
-            Click "Create New Interview" to start your first mock interview!
+            Click &quot;Create New Interview&quot; to start your first mock
+            interview!
           </p>
         </div>
       )}
