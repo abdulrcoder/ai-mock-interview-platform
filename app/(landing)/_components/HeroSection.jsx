@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -11,7 +12,7 @@ const HeroSection = () => {
         {/* Left Content */}
         <div className="md:w-1/2 space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight shadow-md">
-            Ace Your Next Interview with{" "}
+            Ace Your Next Interview with
             <span className="text-blue-500">AI-Powered</span> Mock Sessions
           </h1>
           <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
@@ -30,9 +31,11 @@ const HeroSection = () => {
 
         {/* Right Content */}
         <div className="md:w-1/2 flex justify-center">
-          <img
+          <Image
             src="/hero.png"
             alt="AI Mock Interview Illustration"
+            width={500} // Set width for optimization
+            height={500} // Set height for optimization
             className="w-full max-w-lg rounded-lg shadow-lg"
           />
         </div>

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { Link } from "react-scroll";
+import { Link as ScrollLink } from "react-scroll";
+import Link from "next/link";
 
 const NavBar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,56 +15,59 @@ const NavBar = () => {
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="text-2xl font-semibold tracking-wider">
-          <Link
+          <ScrollLink
             to="/"
             smooth={true}
             duration={500}
             className="hover:text-gray-300 transition-colors cursor-pointer"
           >
             AI Mock Interview
-          </Link>
+          </ScrollLink>
         </div>
 
         {/* Navigation Links for Desktop */}
         <div className="hidden md:flex space-x-8 text-lg">
-          <Link
+          <ScrollLink
             to="home"
             smooth={true}
             duration={500}
             className="hover:text-gray-400 transition-colors cursor-pointer"
           >
             Home
-          </Link>
-          <Link
+          </ScrollLink>
+          <ScrollLink
             to="features"
             smooth={true}
             duration={500}
             className="hover:text-gray-400 transition-colors cursor-pointer"
           >
             Features
-          </Link>
-          <Link
+          </ScrollLink>
+          <ScrollLink
             to="pricing"
             smooth={true}
             duration={500}
             className="hover:text-gray-400 transition-colors cursor-pointer"
           >
             Pricing
-          </Link>
-          <Link
+          </ScrollLink>
+          <ScrollLink
             to="about"
             smooth={true}
             duration={500}
             className="hover:text-gray-400 transition-colors cursor-pointer"
           >
             About Us
-          </Link>
+          </ScrollLink>
         </div>
 
         {/* Action Button */}
-        <button className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white py-2 px-5 rounded-lg font-semibold transition duration-200 shadow-lg">
-          Login
-        </button>
+        <Link
+          href={"/dashboard"}
+          className="hidden md:block cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 px-5 rounded-lg font-semibold transition duration-200 shadow-lg"
+        >
+          Sign up
+        </Link>
       </div>
 
       {/* Mobile Menu Toggle */}
