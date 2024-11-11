@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import NewInterviewModal from "../_components/NewInterviewModal";
 import InterviewCard from "./_components/InterviewCard";
 import axios from "axios";
@@ -12,14 +12,7 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const { isLoaded, isSignedIn, user } = useUser();
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      createUserIfNotExists();
-      fetchRecentInterviews();
-    }
-  }, [isLoaded, isSignedIn]);
-
-  const createUserIfNotExists = async () => {
+  const createUserIfNotExists = useCallback(async () => {
     try {
       await axios.post(
         "/api/users",
@@ -36,9 +29,9 @@ const DashboardPage = () => {
     } catch (error) {
       console.error("Error creating user:", error);
     }
-  };
+  }, [user?.id, user?.primaryEmailAddress?.emailAddress]);
 
-  const fetchRecentInterviews = async () => {
+  const fetchRecentInterviews = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get("/api/interviews", {
@@ -46,7 +39,6 @@ const DashboardPage = () => {
           "user-id": user.id,
         },
       });
-      // Ensure response data is an array; set to empty array if no interviews found
       setInterviews(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching interviews:", error);
@@ -54,7 +46,14 @@ const DashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      createUserIfNotExists();
+      fetchRecentInterviews();
+    }
+  }, [isLoaded, isSignedIn, createUserIfNotExists, fetchRecentInterviews]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -100,8 +99,8 @@ const DashboardPage = () => {
       <div className="bg-gradient-to-r from-gray-800 to-gray-700 shadow-lg rounded-lg p-6 mb-8 transition duration-300 transform">
         <p className="mb-8 text-lg">
           🌟 <span className="font-semibold">AI-Powered Mock Interviews</span>{" "}
-          help you prepare with custom-tailored questions and feedback. Let's
-          make your next interview a success! 💼
+          help you prepare with custom-tailored questions and feedback.
+          Let&apos;s make your next interview a success! 💼
         </p>
       </div>
 
@@ -125,8 +124,8 @@ const DashboardPage = () => {
           <div className="text-center text-gray-400 mt-8">
             <p>No recent interviews found.</p>
             <p>
-              Click "Create New Interview" to start preparing for your next
-              interview!
+              Click &quot;Create New Interview&quot; to start preparing for your
+              next interview!
             </p>
           </div>
         )}
